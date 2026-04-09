@@ -119,6 +119,8 @@ class VolcEngineVLM(OpenAIVLM):
         if tools:
             kwargs["tools"] = tools
             kwargs["tool_choice"] = tool_choice or "auto"
+        if self.extra_headers:
+            kwargs["extra_headers"] = self.extra_headers
 
         client = self.get_client()
         t0 = time.perf_counter()
@@ -152,6 +154,8 @@ class VolcEngineVLM(OpenAIVLM):
         if tools:
             kwargs["tools"] = tools
             kwargs["tool_choice"] = tool_choice or "auto"
+        if self.extra_headers:
+            kwargs["extra_headers"] = self.extra_headers
 
         # 用 tracer.info 打印请求
         tracer.info(f"request: {json.dumps(kwargs_messages, ensure_ascii=False, indent=2)}")
@@ -323,6 +327,8 @@ class VolcEngineVLM(OpenAIVLM):
         if tools:
             kwargs["tools"] = tools
             kwargs["tool_choice"] = "auto"
+        if self.extra_headers:
+            kwargs["extra_headers"] = self.extra_headers
 
         client = self.get_client()
         t0 = time.perf_counter()
@@ -364,6 +370,8 @@ class VolcEngineVLM(OpenAIVLM):
         if tools:
             kwargs["tools"] = tools
             kwargs["tool_choice"] = "auto"
+        if self.extra_headers:
+            kwargs["extra_headers"] = self.extra_headers
 
         client = self.get_async_client()
         t0 = time.perf_counter()

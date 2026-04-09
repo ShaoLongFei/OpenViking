@@ -405,6 +405,7 @@ class EmbeddingConfig(BaseModel):
                     "api_base": cfg.api_base,
                     "dimension": cfg.dimension,
                     "input_type": cfg.input,
+                    **({"extra_headers": cfg.extra_headers} if cfg.extra_headers else {}),
                     "config": dict(runtime_config),
                 },
             ),

@@ -65,6 +65,7 @@ class VolcengineDenseEmbedder(DenseEmbedderBase):
         api_base: Optional[str] = None,
         dimension: Optional[int] = None,
         input_type: str = "multimodal",
+        extra_headers: Optional[Dict[str, str]] = None,
         config: Optional[Dict[str, Any]] = None,
     ):
         """Initialize Volcengine Dense Embedder
@@ -86,6 +87,7 @@ class VolcengineDenseEmbedder(DenseEmbedderBase):
         self.api_base = api_base or "https://ark.cn-beijing.volces.com/api/v3"
         self.dimension = dimension
         self.input_type = input_type
+        self.extra_headers = extra_headers
 
         if not self.api_key:
             raise ValueError("api_key is required")
@@ -160,13 +162,19 @@ class VolcengineDenseEmbedder(DenseEmbedderBase):
             if self.input_type == "multimodal":
                 # Use multimodal embeddings API
                 response = self.client.multimodal_embeddings.create(
-                    input=[{"type": "text", "text": text}], model=self.model_name
+                    input=[{"type": "text", "text": text}],
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
                 )
                 self._update_telemetry_token_usage(response)
                 vector = response.data.embedding
             else:
                 # Use text embeddings API
-                response = self.client.embeddings.create(input=text, model=self.model_name)
+                response = self.client.embeddings.create(
+                    input=text,
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
+                )
                 self._update_telemetry_token_usage(response)
                 vector = response.data[0].embedding
 
@@ -193,12 +201,18 @@ class VolcengineDenseEmbedder(DenseEmbedderBase):
         async def _embed_call() -> EmbedResult:
             if self.input_type == "multimodal":
                 response = await client.multimodal_embeddings.create(
-                    input=[{"type": "text", "text": text}], model=self.model_name
+                    input=[{"type": "text", "text": text}],
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
                 )
                 self._update_telemetry_token_usage(response)
                 vector = response.data.embedding
             else:
-                response = await client.embeddings.create(input=text, model=self.model_name)
+                response = await client.embeddings.create(
+                    input=text,
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
+                )
                 self._update_telemetry_token_usage(response)
                 vector = response.data[0].embedding
 
@@ -233,12 +247,18 @@ class VolcengineDenseEmbedder(DenseEmbedderBase):
             if self.input_type == "multimodal":
                 multimodal_inputs = [{"type": "text", "text": text} for text in texts]
                 response = self.client.multimodal_embeddings.create(
-                    input=multimodal_inputs, model=self.model_name
+                    input=multimodal_inputs,
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
                 )
                 self._update_telemetry_token_usage(response)
                 data = response.data
             else:
-                response = self.client.embeddings.create(input=texts, model=self.model_name)
+                response = self.client.embeddings.create(
+                    input=texts,
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
+                )
                 self._update_telemetry_token_usage(response)
                 data = response.data
 
@@ -271,12 +291,18 @@ class VolcengineDenseEmbedder(DenseEmbedderBase):
             if self.input_type == "multimodal":
                 multimodal_inputs = [{"type": "text", "text": text} for text in texts]
                 response = await client.multimodal_embeddings.create(
-                    input=multimodal_inputs, model=self.model_name
+                    input=multimodal_inputs,
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
                 )
                 self._update_telemetry_token_usage(response)
                 data = response.data
             else:
-                response = await client.embeddings.create(input=texts, model=self.model_name)
+                response = await client.embeddings.create(
+                    input=texts,
+                    model=self.model_name,
+                    extra_headers=self.extra_headers,
+                )
                 self._update_telemetry_token_usage(response)
                 data = response.data
 
