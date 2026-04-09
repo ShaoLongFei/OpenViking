@@ -252,6 +252,7 @@ async def add_message(
     """
     service = get_service()
     session = service.sessions.session(_ctx, session_id)
+    await session.ensure_exists()
     await session.load()
 
     if request.parts is not None:
